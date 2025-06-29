@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.enumeration.UserRoleEnum;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import com.example.demo.service.EmailService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,9 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -78,11 +82,27 @@ public class UserController {
         User user = userService.getUserById(id);
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
+        if (userRequest.getPassword() != null && !userRequest.getPassword().trim().isEmpty()) {
+            user.setPassword(userRequest.getPassword());
+        }
         user.setPhoneNumber(userRequest.getPhoneNumber());
         user.setAltEmail(userRequest.getAltEmail());
         user.setProfilePicture(userRequest.getProfilePicture());
         return userService.updateUser(user);
+    }
+
+    @PostMapping("/test-email")
+    public ResponseEntity<String> testEmail(@RequestBody TestEmailRequest request) {
+        try {
+            emailService.sendHtmlEmail(
+                request.getEmail(), 
+                "SentiFin Email Test", 
+                "<h2>Email Test Successful!</h2><p>Your SentiFin email configuration is working correctly.</p>"
+            );
+            return ResponseEntity.ok("Test email sent successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to send test email: " + e.getMessage());
+        }
     }
 
     // DTO for request body
@@ -102,5 +122,11 @@ public class UserController {
     public static class LoginRequest {
         private String email;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    public static class TestEmailRequest {
+        private String email;
     }
 }

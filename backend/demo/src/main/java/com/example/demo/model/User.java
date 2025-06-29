@@ -39,7 +39,7 @@ public class User{
     @Column(name = "alt_email")
     private String altEmail;
 
-    @Column(name = "profile_picture")
+    @Column(name = "profile_picture", columnDefinition = "TEXT")
     private String profilePicture;
 
     @Column(name = "role", nullable = false)

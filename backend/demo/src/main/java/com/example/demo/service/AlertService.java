@@ -120,6 +120,6 @@ public class AlertService {
             + "    </div>"
             + "  </body>"
             + "</html>";
-        emailService.sendEmail(user.getEmail(), subject, html);
+        emailService.sendHtmlEmail(user.getEmail(), subject, html);
     }
 }

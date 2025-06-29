@@ -43,14 +43,14 @@ public class AnnouncementController {
             throw new RuntimeException("User is not an admin");
         }
 
-        if(announcementRequest.getTitle() == null || announcementRequest.getDescription() == null || announcementRequest.getAttachmentUrl() == null || announcementRequest.getUserId() == null){
+        if(announcementRequest.getTitle() == null || announcementRequest.getDescription() == null || announcementRequest.getUserId() == null){
             throw new RuntimeException("Invalid announcement request");
         }
 
         Announcement announcement = new Announcement();
         announcement.setTitle(announcementRequest.getTitle());
         announcement.setDescription(announcementRequest.getDescription());
-        announcement.setAttachmentUrl(announcementRequest.getAttachmentUrl());
+        announcement.setAttachment(announcementRequest.getAttachment());
         User user = userService.getUserById(announcementRequest.getUserId());
         announcement.setUser(user);
         announcement.setEdited(false);
@@ -80,7 +80,7 @@ public class AnnouncementController {
         Announcement announcement = announcementService.getAnnouncementById(id);
         announcement.setTitle(announcementRequest.getTitle());
         announcement.setDescription(announcementRequest.getDescription());
-        announcement.setAttachmentUrl(announcementRequest.getAttachmentUrl());
+        announcement.setAttachment(announcementRequest.getAttachment());
         User user = userService.getUserById(announcementRequest.getUserId());
         announcement.setEditAuthor(user);
         announcement.setEdited(true);
@@ -96,7 +96,7 @@ public class AnnouncementController {
         private String title;
         @NotBlank(message = "Description is required")
         private String description;
-        private String attachmentUrl;
+        private String attachment;
         @NotNull(message = "User ID is required")
         private Long userId;
     }

@@ -32,7 +32,7 @@ public class Announcement {
     private String description;
 
     @Column(name = "attachment")
-    private String attachmentUrl;
+    private String attachment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
